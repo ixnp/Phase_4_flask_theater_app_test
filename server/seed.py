@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from faker import Faker
 
-from server.app import app
+from app import app
 from models import db, Production, CastMember, User
 
 fake = Faker()

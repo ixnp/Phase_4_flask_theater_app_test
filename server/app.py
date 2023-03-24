@@ -22,6 +22,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
 
+
+app.secret_key = os.environ.get('SESSION_KEY')
+
 CORS(app) 
 bcrypt = Bcrypt(app)
 from models import db, Production, CastMember, User
@@ -176,6 +179,18 @@ class AuthorizedSession(Resource):
         except:
             abort(401, "Unauthorized")
 api.add_resource(AuthorizedSession, '/authorized')
+
+class CastMembers(Resource):
+    def get(self):
+        cast_members_list = [cast_member.to_dict() for cast_member in CastMember.query.all()]
+        response = make_response(
+            cast_members_list,
+            200,
+        )
+
+        return response
+
+api.add_resource(CastMembers, '/cast_members')
 
 @app.errorhandler(NotFound)
 def handle_not_found(e):

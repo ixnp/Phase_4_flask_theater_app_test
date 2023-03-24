@@ -11,7 +11,9 @@ function ProductionDetail() {
     fetch(`/productions/${params.id}`)
     .then(res => { 
       if(res.ok){
-        res.json().then(data => setProduction(data))
+        res.json().then(data => {
+          console.log(data)
+          setProduction(data)})
       } else {
         res.json().then(data => setError(data.error))
       }
@@ -20,7 +22,8 @@ function ProductionDetail() {
   },[])
 
   
-  const {id, title, genre, image,description, crew_members} = production 
+  const {id, title, genre, image,description, cast_members=[]} = production
+  console.log(cast_members)
   if(error) return <h2>{error}</h2>
   return (
       <CardDetail id={id}>
@@ -33,7 +36,7 @@ function ProductionDetail() {
               <p>{description}</p>
               <h2>Cast Members</h2>
               <ul>
-                {crew_members.map(crew => <li>{`${crew.role} : ${crew.name}`}</li>)}
+                {cast_members.map(cm => <h4>{cm.role}: {cm.name}</h4>)}
               </ul>
             </div>
             <img alt={title} src={image}/>
